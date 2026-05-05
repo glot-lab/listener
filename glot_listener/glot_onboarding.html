@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F7F7F5" />
+  <title>Glot — Welcome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+
+    /* ── Reset ────────────────────────────────────────────────────────────── */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Tokens ───────────────────────────────────────────────────────────── */
+
+    :root {
+      --font:            'Inter', -apple-system, sans-serif;
+      --accent:          #3B7EF6;
+      --accent-subtle:   rgba(59,126,246,0.06); /* accent @ 6% — selected lang option */
+      --white:           #ffffff;
+      --bg:              #F7F7F5;
+      --bg-input:        #F2F2F0;        /* search input + option active bg */
+      --surface:         #FFFFFF;
+      --text-primary:    #141416;
+      --text-secondary:  rgba(20,20,22,0.50);
+      --text-dim:        rgba(20,20,22,0.35);
+      --border:          rgba(20,20,22,0.08);
+      --radius-btn:      14px;
+      --radius-sm:       10px;
+      --shadow-hero:     0 8px 32px rgba(0,0,0,0.18);
+      --shadow-flag:     0 0 0 1px rgba(0,0,0,0.08);
+      --backdrop-color:  rgba(0,0,0,0.35);
+      --handle-color:    rgba(0,0,0,0.12);
+
+      --sat: env(safe-area-inset-top,    0px);
+      --sar: env(safe-area-inset-right,  0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left,   0px);
+    }
+
+    /* ── Base ─────────────────────────────────────────────────────────────── */
+
+    *,
+    *::before,
+    *::after {
+      -webkit-tap-highlight-color: transparent; /* suppress iOS tap flash */
+    }
+
+    html, body {
+      height:                 100dvh;
+      overflow:               hidden;
+      background:             var(--bg);
+      font-family:            var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Screen manager ───────────────────────────────────────────────────── */
+
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .screen--hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════ */
+    /*  WELCOME SCREEN                                                        */
+    /* ══════════════════════════════════════════════════════════════════════ */
+
+    #screen-welcome {
+      padding-top:   var(--sat);
+      padding-left:  var(--sal);
+      padding-right: var(--sar);
+    }
+
+    /* ── Hero image ──────────────────────────────────────────────────────── */
+
+    .welcome__hero {
+      position: relative;
+      width: calc(100% - 32px);
+      margin: 16px 16px 0;
+      flex-shrink: 0;
+      height: 48dvh;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: var(--shadow-hero);
+    }
+
+    .welcome__hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── Content ─────────────────────────────────────────────────────────── */
+
+    .welcome__event-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+
+    .welcome__description {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .welcome__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 14px 20px;
+      padding-bottom: calc(20px + var(--sab));
+      overflow: hidden;
+    }
+
+    .welcome__host {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-top: 20px;
+    }
+
+    .welcome__host-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .welcome__host-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .welcome__host-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .welcome__cta {
+      margin-top: 16px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      height: 52px;
+      background: var(--text-primary);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-btn);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      letter-spacing: -0.1px;
+    }
+
+    .btn-primary:active {
+      opacity: 0.8;
+    }
+
+    .btn-primary svg {
+      opacity: 0.7;
+    }
+
+    .welcome__legal {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .welcome__legal a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════════ */
+    /*  LANGUAGE PICKER SCREEN                                                */
+    /* ══════════════════════════════════════════════════════════════════════ */
+
+    #screen-lang {
+      background: transparent;
+    }
+
+    /* Backdrop */
+    .lang__backdrop {
+      position: absolute;
+      inset: 0;
+      background: var(--backdrop-color);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    /* Sheet */
+    .lang__sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      max-height: 88dvh;
+      /* No padding-bottom here — handled by lang__footer to avoid double padding */
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .lang__sheet--open {
+      transform: translateY(0);
+    }
+
+    /* Handle */
+    .lang__handle {
+      width: 36px;
+      height: 4px;
+      background: var(--handle-color);
+      border-radius: 2px;
+      margin: 12px auto 0;
+      flex-shrink: 0;
+    }
+
+    /* Header */
+    .lang__header {
+      padding: 20px 20px 0;
+      flex-shrink: 0;
+    }
+
+    .lang__title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.2px;
+      margin-bottom: 14px;
+    }
+
+    /* Search */
+    .lang__search {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .lang__search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .lang__search input {
+      width: 100%;
+      height: 40px;
+      background: var(--bg-input);
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 0 12px 0 36px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .lang__search input::placeholder {
+      color: var(--text-dim);
+    }
+
+    /* List */
+    .lang__list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .lang__list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .lang__option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 11px 20px;
+      background: none;
+      border: none;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background 0.1s;
+      text-align: left;
+    }
+
+    .lang__option:active {
+      background: var(--bg-input);
+    }
+
+    .lang__option--selected {
+      background: var(--accent-subtle);
+    }
+
+    .lang__flag {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-flag);
+    }
+
+    .lang__flag img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lang__names {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .lang__name-en {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .lang__name-native {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.2;
+    }
+
+    .lang__check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .lang__option--selected .lang__check {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .lang__check svg {
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .lang__option--selected .lang__check svg {
+      opacity: 1;
+    }
+
+    /* Divider between options */
+    .lang__option + .lang__option {
+      border-top: 1px solid var(--border);
+    }
+
+    /* CTA inside sheet — padding-bottom absorbs home indicator (sab) */
+    .lang__footer {
+      padding: 12px 20px;
+      padding-bottom: calc(16px + var(--sab));
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!--  WELCOME SCREEN                                                        -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+
+  <div class="screen" id="screen-welcome">
+
+    <!-- Hero -->
+    <div class="welcome__hero">
+      <img
+        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80"
+        alt="Event cover"
+        id="event-cover"
+      />
+    </div>
+
+    <!-- Content -->
+    <div class="welcome__body">
+      <h1 class="welcome__event-name" id="event-name">AI & Innovation Summit 2025</h1>
+      <p class="welcome__description" id="event-description">
+        A flagship gathering of 400 leaders, researchers and founders exploring the next decade of artificial intelligence across industry and society.
+      </p>
+      <div class="welcome__host">
+        <div class="welcome__host-info">
+          <span class="welcome__host-label">Hosted by</span>
+          <span class="welcome__host-name" id="host-name">Majid Haddouchi</span>
+        </div>
+      </div>
+
+      <div class="welcome__cta">
+        <button type="button" class="btn-primary" onclick="openLangPicker()">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 1.5C10 1.5 7 5.5 7 10s3 8.5 3 8.5M10 1.5C10 1.5 13 5.5 13 10s-3 8.5-3 8.5M1.5 10h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Choose your language
+        </button>
+        <p class="welcome__legal">
+          By continuing, you agree to our
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+
+    </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!--  LANGUAGE PICKER                                                        -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+
+  <div class="screen" id="screen-lang">
+
+    <div class="lang__backdrop" onclick="closeLangPicker()"></div>
+
+    <div class="lang__sheet" id="lang-sheet">
+
+      <div class="lang__handle"></div>
+
+      <div class="lang__header">
+        <div class="lang__title">Choose your language</div>
+        <div class="lang__search">
+          <svg class="lang__search-icon" width="15" height="15" viewBox="0 0 20 20" fill="none">
+            <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13 13l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="search"
+            placeholder="Search language…"
+            id="lang-search-input"
+            oninput="filterLangs(this.value)"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+        </div>
+      </div>
+
+      <div class="lang__list" id="lang-list"></div>
+
+      <div class="lang__footer">
+        <button type="button" class="btn-primary" onclick="confirmLang()">
+          Continue
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+
+    // ── Language data ──────────────────────────────────────────────────────
+
+    const LANGUAGES = [
+      { code: 'en', country: 'gb', label: 'English',    native: 'English'    },
+      { code: 'fr', country: 'fr', label: 'French',     native: 'Français'   },
+      { code: 'zh', country: 'cn', label: 'Chinese',    native: '中文'        },
+      { code: 'hi', country: 'in', label: 'Hindi',      native: 'हिन्दी'      },
+      { code: 'es', country: 'es', label: 'Spanish',    native: 'Español'    },
+      { code: 'ar',    country: 'sa', label: 'Arabic',       native: 'العربية'    },
+      { code: 'bn', country: 'bd', label: 'Bengali',    native: 'বাংলা'      },
+      { code: 'pt', country: 'pt', label: 'Portuguese', native: 'Português'  },
+      { code: 'ru', country: 'ru', label: 'Russian',    native: 'Русский'    },
+      { code: 'ur', country: 'pk', label: 'Urdu',       native: 'اردو'       },
+      { code: 'de', country: 'de', label: 'German',     native: 'Deutsch'    },
+      { code: 'nl', country: 'nl', label: 'Dutch',      native: 'Nederlands' },
+      { code: 'it', country: 'it', label: 'Italian',    native: 'Italiano'   },
+      { code: 'ja', country: 'jp', label: 'Japanese',   native: '日本語'      },
+      { code: 'ko', country: 'kr', label: 'Korean',     native: '한국어'      },
+      { code: 'tr', country: 'tr', label: 'Turkish',    native: 'Türkçe'     },
+      { code: 'th', country: 'th', label: 'Thai',       native: 'ภาษาไทย'   },
+      { code: 'id', country: 'id', label: 'Indonesian', native: 'Bahasa'     },
+      { code: 'ar-EG', country: 'eg', label: 'Egypt',        native: 'مصر'        },
+      { code: 'ar-MA', country: 'ma', label: 'Morocco',      native: 'المغرب'     },
+      { code: 'ar-SA', country: 'sa', label: 'Saudi Arabia', native: 'السعودية'   },
+    ]
+
+    // ── State ──────────────────────────────────────────────────────────────
+
+    let selectedLang = null
+    let filteredLangs = LANGUAGES
+
+    // ── Render list ────────────────────────────────────────────────────────
+
+    function renderList(langs) {
+      const list = document.getElementById('lang-list')
+      list.innerHTML = langs.map(l => `
+        <button
+          class="lang__option${selectedLang?.code === l.code ? ' lang__option--selected' : ''}"
+          onclick="selectLang('${l.code}')"
+          data-code="${l.code}"
+        >
+          <div class="lang__flag">
+            <img
+              src="https://flagcdn.com/w80/${l.country}.png"
+              srcset="https://flagcdn.com/w160/${l.country}.png 2x"
+              alt="${l.label}"
+              loading="lazy"
+            />
+          </div>
+          <div class="lang__names">
+            <span class="lang__name-en">${l.label}</span>
+            <span class="lang__name-native">${l.native}</span>
+          </div>
+          <div class="lang__check">
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+              <path d="M2 6l2.5 2.5L10 3"/>
+            </svg>
+          </div>
+        </button>
+      `).join('')
+    }
+
+    function filterLangs(query) {
+      const q = query.toLowerCase().trim()
+      filteredLangs = q
+        ? LANGUAGES.filter(l =>
+            l.label.toLowerCase().includes(q) ||
+            l.native.toLowerCase().includes(q) ||
+            l.code.includes(q)
+          )
+        : LANGUAGES
+      renderList(filteredLangs)
+    }
+
+    function selectLang(code) {
+      selectedLang = LANGUAGES.find(l => l.code === code)
+      renderList(filteredLangs)
+    }
+
+    // ── Screen transitions ─────────────────────────────────────────────────
+
+    function openLangPicker() {
+      const screen = document.getElementById('screen-lang')
+      const sheet  = document.getElementById('lang-sheet')
+      screen.classList.remove('screen--hidden')
+      // Force reflow before animating
+      sheet.getBoundingClientRect()
+      sheet.classList.add('lang__sheet--open')
+      renderList(LANGUAGES)
+      setTimeout(() => document.getElementById('lang-search-input').focus(), 400)
+    }
+
+    function closeLangPicker() {
+      const sheet = document.getElementById('lang-sheet')
+      sheet.classList.remove('lang__sheet--open')
+      setTimeout(() => {
+        document.getElementById('screen-lang').classList.add('screen--hidden')
+        document.getElementById('lang-search-input').value = ''
+        filterLangs('')
+      }, 380)
+    }
+
+    function confirmLang() {
+      if (!selectedLang) return
+      closeLangPicker()
+      // Production: navigate to listener with ?lang=selectedLang.code
+      // e.g. window.location.href = `/live/${sessionId}?lang=${selectedLang.code}`
+      setTimeout(() => {
+        alert(`→ Listener: ${selectedLang.label} (${selectedLang.code})`)
+      }, 400)
+    }
+
+    // ── Init ───────────────────────────────────────────────────────────────
+
+    document.getElementById('screen-lang').classList.add('screen--hidden')
+
+  </script>
+</body>
+</html>
