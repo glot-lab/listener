@@ -419,7 +419,21 @@
       0%, 45%   { opacity: 1; }
       55%, 100% { opacity: 0; }
     }
+@keyframes lineIn {
+  from {
+    opacity:   0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity:   var(--line-opacity, 1);
+    transform: translateY(0);
+  }
+}
 
+.sub-line.animate {
+  animation: lineIn 0.4s ease forwards;
+}
+    
     /* ── Reading panel ───────────────────────────────────────────────────── */
 
     .panel {
@@ -1018,6 +1032,10 @@
     function commitLine() {
       for (let i = 9; i > 1; i--) slots[i].textContent = slots[i - 1].textContent
       slots[1].textContent = DEMO_LINES[lineIdx]
+        slots[1].classList.remove('animate')
+        void slots[1].offsetWidth  // force reflow
+        slots[1].classList.add('animate')
+      
       lineIdx     = (lineIdx + 1) % DEMO_LINES.length
       charIdx     = 0
       currentText = ''
