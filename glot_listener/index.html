@@ -883,7 +883,7 @@
     document.addEventListener('mousemove',  wakeTopbar)
     document.addEventListener('click', () => setTimeout(wakeTopbar, 0))
 
-    document.getElementById('topbar').classList.add('hidden')
+    wakeTopbar()
 
     // ── Session actions ───────────────────────────────────────────────────
 
